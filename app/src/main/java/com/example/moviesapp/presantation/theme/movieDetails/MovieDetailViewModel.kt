@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(private val getMovieDetailsUseCase: GetMovieDetailsUseCase
-, private val savedStateHandle: SavedStateHandle) :ViewModel() {
+, val savedStateHandle: SavedStateHandle) :ViewModel() {
 
     private val _state = mutableStateOf<MovieDetailState>(MovieDetailState())
     val state : State<MovieDetailState> = _state
@@ -23,8 +23,12 @@ class MovieDetailViewModel @Inject constructor(private val getMovieDetailsUseCas
 
 
     init {
-        IMDB_ID?.let { imdbId ->
-            getMovieDetail(imdbId)
+        println("$IMDB_ID")
+        val imdbId: String? = IMDB_ID
+        imdbId?.let {
+            getMovieDetail(it)
+        } ?: run {
+            _state.value = MovieDetailState(error = "IMDB ID is missing")
         }
     }
 

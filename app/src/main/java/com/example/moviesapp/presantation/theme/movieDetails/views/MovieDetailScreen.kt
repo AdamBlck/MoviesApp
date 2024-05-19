@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,14 +76,23 @@ fun MovieDetailScreen (movieDetailViewModel: MovieDetailViewModel = hiltViewMode
                     }
                     
                 }
-                
-                Image(painter = rememberImagePainter(it.Poster), contentDescription =it.Title,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(350.dp, 300.dp)
-                        .clip(RectangleShape)
-                        .align(Alignment.CenterHorizontally)
-                )
+
+                Card(
+                    modifier = Modifier.size(310.dp),
+                    colors = CardDefaults.cardColors(
+                        contentColor = Color.Green,
+                        containerColor = Color.Gray
+                    ),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Image(
+                        painter = rememberImagePainter(data = it.Poster),
+                        contentDescription = it.Title,
+                        contentScale = ContentScale.Crop, // Bu, görüntüyü kırpmadan sığdırır
+                        modifier = Modifier
+                            .fillMaxSize() // Kartın tüm alanını kaplar
+                    )
+                }
                 Text(text = it.Title,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(14.dp),

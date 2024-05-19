@@ -2,6 +2,7 @@ package com.example.moviesapp.presantation.theme.movies.views
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +48,8 @@ import com.example.moviesapp.util.Constants.IMDB_ID
 @Composable
 fun MovieScreen(
     navController: NavController,
-    viewModel: MovieViewModel = hiltViewModel()
+    viewModel: MovieViewModel = hiltViewModel(),
+
 ){
   val state = viewModel.state.value
 
@@ -64,11 +67,12 @@ fun MovieScreen(
             LazyColumn(modifier = Modifier.fillMaxSize()){
                 items(state.movies){ movie->
                     MovieListRow(movie = movie, onItemClick = {
-                        if (movie.imdbID.isEmpty()){
+                        try {
 
-                        }else{
                             IMDB_ID = movie.imdbID
                             navController.navigate(Screen.MovieDetailScreen.route)
+                        }catch (e:Exception){
+                            Log.d("TAG", "there ara something wrong!!  $e")
                         }
 
 
